@@ -17,8 +17,8 @@ export default function CircleButton({ onPress }: Props) {
 
 const styles = StyleSheet.create({
   circleButtonContainer: {
-    width: 84,
-    height: 84,
+    width: 60,
+    height: 60,
     marginHorizontal: 60,
     borderWidth: 4,
     borderColor: '#ffd33d',

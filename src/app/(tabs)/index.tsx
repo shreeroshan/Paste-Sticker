@@ -9,6 +9,7 @@ import CircleButton from "@/components/CircleButton";
 import EmojiPicker from "@/components/EmojiPicker";
 import EmojiList from "@/components/EmojiList";
 import EmojiSticker from "@/components/Emojisticker";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const PlaceholderImage=require("@/assets/sticker-smash-assets/images/background-image.png")
@@ -35,25 +36,36 @@ export default function Index() {
 
   const onReset=()=>{
     setShowAppOptions(false);
+    setSelectedImage(undefined);
+    setPickedEmoji(undefined);
   }
   const onAddSticker=()=>{
     setIsModalVisible(true)
   }
 
   const onModalClose=()=>{
-    setIsModalVisible(true)
-
+    setIsModalVisible(false)
   }
 
   const onSaveImageAsync=async()=>{
-
+    if(!selectedImage){
+      alert('Please select an image first');
+      return;
+    }
+    try{
+      alert('Image saved successfully!');
+      setShowAppOptions(false);
+      setSelectedImage(undefined);
+      setPickedEmoji(undefined);
+    }catch(e){
+      alert('Failed to save image');
+    }
   }
    return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <View style={styles.imageContainer}>
         <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
         {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
-
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
@@ -69,18 +81,18 @@ export default function Index() {
           <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
         </View>
       )}
-       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
-      </EmojiPicker>
-    </View>
+      {isModalVisible && (
+        <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+          <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+        </EmojiPicker>
+      )}
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor:"#25292e",
   },
   text:{
@@ -94,6 +106,8 @@ const styles = StyleSheet.create({
   },
   imageContainer:{
     flex:1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   image:{
     width:320,
@@ -102,10 +116,13 @@ const styles = StyleSheet.create({
   },
   footerContainer:{
     flex:1/3,
-    alignItems:"center"
-  },optionsContainer: {
-    position: 'absolute',
-    bottom: 80,
+    alignItems:"center",
+    justifyContent: "center",
+  },
+  optionsContainer: {
+    flex:1/3,
+    alignItems: "center",
+    justifyContent: "center",
   },
   optionsRow: {
     alignItems: 'center',
