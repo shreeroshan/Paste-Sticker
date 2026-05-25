@@ -5,6 +5,8 @@ export default function AboutScreen(){
     return (
         <View style={styles.container}>
             <Text style={styles.text}> About Screen</Text>
+            <Link href={"/"} style={styles.text}>
+            Go Back to HOme</Link>
         </View>
     )
 }
